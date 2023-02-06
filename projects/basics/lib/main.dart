@@ -11,16 +11,17 @@ class BasicsApp extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return BasicsAppState();
+    return _BasicsAppState();
   }
 }
 
-class BasicsAppState extends State<BasicsApp> {
+// Under score is the "private" modifier in Dart
+class _BasicsAppState extends State<BasicsApp> {
   static final Logger log = getLogger();
 
   int questionIndex = 0;
 
-  void answerQuestion() { 
+  void _answerQuestion() { 
     setState(() { questionIndex++; });
     log.i('indexQuestion: $questionIndex'); 
   }
@@ -34,9 +35,9 @@ class BasicsAppState extends State<BasicsApp> {
         appBar: AppBar(title: Text('Flutter Basics')),
         body: Column(children: <Widget>[
           Text(questions[questionIndex]),
-          ElevatedButton(onPressed: answerQuestion, child: Text('Answer 1')),
-          ElevatedButton(onPressed: answerQuestion, child: Text('Answer 2')),
-          ElevatedButton(onPressed: answerQuestion, child: Text('Answer 3')),
+          ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 1')),
+          ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 2')),
+          ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 3')),
         ],),
       )
     );
