@@ -30,16 +30,26 @@ class _BasicsAppState extends State<BasicsApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> questions = ['What\'s Mr. Peanutbutter birthday?', 'Who\'s that dog?'];
+    List<Map<String, Object>> questions = [
+      { 
+        'questionText': 'What\'s Mr. Peanutbutter birthday?',
+        'answers': ['08/69', '01/76', '10/99',]
+      },
+      {
+        'questionText': 'Who\'s that dog?',
+        'answers': ['Mr. Peanutbutter', 'Ringo', 'Magnus',]
+      }
+    ];
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text('Flutter Basics')),
         body: Column(children: <Widget>[
-          Question(questions[_questionIndex]),
-          Answer('Answer 1', _answerQuestion),
-          Answer('Answer 2', _answerQuestion),
-          Answer('Answer 2', _answerQuestion),
+          Question(questions[_questionIndex]['questionText'] as String),
+          // Spread operator. Same as the JS operator
+          ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
+            return Answer(answer, _answerQuestion);
+          }).toList()
         ],),
       )
     );

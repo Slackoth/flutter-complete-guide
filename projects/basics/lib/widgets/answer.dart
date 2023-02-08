@@ -11,7 +11,8 @@ class Answer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ElevatedButton(
+      width: double.infinity,
+      child: ElevatedButton( // ElevatedButton will take the style of the main theme
         child: Text(answerText),
         onPressed: answerQuestion,
       )
