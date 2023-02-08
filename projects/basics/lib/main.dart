@@ -1,4 +1,5 @@
 import 'package:basics/log/getLogger.dart';
+import 'package:basics/widgets/question.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -34,7 +35,7 @@ class _BasicsAppState extends State<BasicsApp> {
       home: Scaffold(
         appBar: AppBar(title: Text('Flutter Basics')),
         body: Column(children: <Widget>[
-          Text(questions[questionIndex]),
+          Question(questions[questionIndex]),
           ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 1')),
           ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 2')),
           ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 3')),
