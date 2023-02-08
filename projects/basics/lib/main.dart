@@ -1,4 +1,5 @@
 import 'package:basics/log/getLogger.dart';
+import 'package:basics/widgets/answer.dart';
 import 'package:basics/widgets/question.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -20,11 +21,11 @@ class BasicsApp extends StatefulWidget {
 class _BasicsAppState extends State<BasicsApp> {
   static final Logger log = getLogger();
 
-  int questionIndex = 0;
+  int _questionIndex = 0;
 
   void _answerQuestion() { 
-    setState(() { questionIndex++; });
-    log.i('indexQuestion: $questionIndex'); 
+    setState(() { _questionIndex++; });
+    log.i('indexQuestion: $_questionIndex'); 
   }
 
   @override
@@ -35,10 +36,10 @@ class _BasicsAppState extends State<BasicsApp> {
       home: Scaffold(
         appBar: AppBar(title: Text('Flutter Basics')),
         body: Column(children: <Widget>[
-          Question(questions[questionIndex]),
-          ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 1')),
-          ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 2')),
-          ElevatedButton(onPressed: _answerQuestion, child: Text('Answer 3')),
+          Question(questions[_questionIndex]),
+          Answer('Answer 1', _answerQuestion),
+          Answer('Answer 2', _answerQuestion),
+          Answer('Answer 2', _answerQuestion),
         ],),
       )
     );
