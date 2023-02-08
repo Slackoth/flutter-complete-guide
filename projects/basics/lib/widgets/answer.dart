@@ -13,8 +13,8 @@ class Answer extends StatelessWidget {
     return Container(
       width: double.infinity,
       child: ElevatedButton( // ElevatedButton will take the style of the main theme
+        onPressed: answerQuestion, // ElevatedButton will take the style of the main theme
         child: Text(answerText),
-        onPressed: answerQuestion,
       )
     );
   }
