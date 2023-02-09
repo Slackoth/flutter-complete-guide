@@ -26,24 +26,37 @@ class BasicsApp extends StatefulWidget {
 
 // Under score is the "private" modifier in Dart
 class _BasicsAppState extends State<BasicsApp> {
-  
   static final Logger log = getLogger();
 
   int _questionIndex = 0;
+  int _totalScore = 0;
   final List<Map<String, Object>> _questions = [
     { 
       'questionText': 'What\'s Mr. Peanutbutter birthday?',
-      'answers': ['08/69', '01/76', '10/99',]
+      'answers': [
+        {'text': '08/69', 'score': 10},
+        {'text': '07/70', 'score': 5},
+        {'text': '06/71', 'score': 0},
+      ]
     },
     {
       'questionText': 'Who\'s that dog?',
-      'answers': ['Mr. Peanutbutter', 'Ringo', 'Magnus',]
+      'answers': [
+        {'text': 'Mr. Peanutbutter', 'score': 10 },
+        {'text': 'Ringo', 'score': 5 },
+        {'text': 'Magnus', 'score': 0 },
+      ]
     }
   ];
 
-  void _answerQuestion() { 
-    setState(() { _questionIndex++; });
+  void _answerQuestion(int score) { 
+    setState(() { _questionIndex++; _totalScore += score; });
     log.i('indexQuestion: $_questionIndex'); 
+  }
+
+  void _resetQuiz() {
+    setState(() { _questionIndex = 0; _totalScore = 0; });
+    log.i('Quiz resetted!'); 
   }
 
   @override
@@ -56,7 +69,7 @@ class _BasicsAppState extends State<BasicsApp> {
           questions: _questions, 
           answerQuestion: _answerQuestion, 
           questionIndex: _questionIndex
-        ) :  const Result(),
+        ) : Result(resultScore: _totalScore, resetQuiz: _resetQuiz),
       ),
     );
   }
