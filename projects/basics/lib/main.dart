@@ -1,6 +1,8 @@
 import 'package:basics/log/getLogger.dart';
-import 'package:basics/widgets/answer.dart';
-import 'package:basics/widgets/question.dart';
+import 'package:basics/widgets/quiz/answer.dart';
+import 'package:basics/widgets/quiz/question.dart';
+import 'package:basics/widgets/quiz/quiz.dart';
+import 'package:basics/widgets/quiz/result.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -28,7 +30,7 @@ class _BasicsAppState extends State<BasicsApp> {
   static final Logger log = getLogger();
 
   int _questionIndex = 0;
-  final List<Map<String, Object>> questions = [
+  final List<Map<String, Object>> _questions = [
     { 
       'questionText': 'What\'s Mr. Peanutbutter birthday?',
       'answers': ['08/69', '01/76', '10/99',]
@@ -48,22 +50,14 @@ class _BasicsAppState extends State<BasicsApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Flutter Basics')),
-        body: _questionIndex < questions.length ? Column(children: <Widget>[
-          Question(questions[_questionIndex]['questionText'] as String),
-          // Spread operator. Same as the JS operator
-          ...(questions[_questionIndex]['answers'] as List<String>).map((answer) {
-            return Answer(answer, _answerQuestion);
-          }).toList()
-        ],) : const SizedBox(
-          width: double.infinity,
-          child: Text(
-            'No more questions!', 
-            textAlign: TextAlign.center, 
-            style: TextStyle(fontSize: 28),
-          ),
-        ),
-      )
+        appBar: AppBar(title: const Text('Flutter Basics')),
+        body: _questionIndex < _questions.length ? 
+        Quiz(
+          questions: _questions, 
+          answerQuestion: _answerQuestion, 
+          questionIndex: _questionIndex
+        ) :  const Result(),
+      ),
     );
   }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class Answer extends StatelessWidget {
   final String answerText;
@@ -10,7 +8,7 @@ class Answer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: ElevatedButton( // ElevatedButton will take the style of the main theme
         onPressed: answerQuestion, // ElevatedButton will take the style of the main theme
