@@ -25,17 +25,19 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.purple,
         title: const Text('Expenses App'),
       ),
-      body: Column(
-        children: const <Widget>[
-          Card(
-            elevation: 5,
-            child: SizedBox(
-              width: double.infinity,
-              child: Text('Chart')
+      body: SingleChildScrollView(
+        child: Column(
+          children: const <Widget>[
+            Card(
+              elevation: 5,
+              child: SizedBox(
+                width: double.infinity,
+                child: Text('Chart')
+              ),
             ),
-          ),
-          UserTransactions()
-        ]
+            UserTransactions()
+          ]
+        ),
       ),
     );
   }
