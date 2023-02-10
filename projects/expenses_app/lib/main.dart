@@ -21,8 +21,8 @@ class ExpensesApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   static final Logger log = Utils.getLogger(); 
 
-  String titleInput = '';
-  String amountInput = '';
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
   final List<Transaction> transactions = [
     Transaction(
       id: "t1", 
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
     )
   ];
   
-  // HomePage({super.key});
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +64,15 @@ class HomePage extends StatelessWidget {
                 children: <Widget>[
                 TextField(
                   decoration: const InputDecoration(labelText: 'Title'),
-                  onChanged: (value) { titleInput = value; },
+                  controller: titleController,
                 ),
                 TextField(
                   decoration: const InputDecoration(labelText: 'Amount'),
-                  onChanged: (value) { amountInput = value; },
+                  controller: amountController,
                 ),
                 TextButton(
                   onPressed: () {
-                    log.i('Title: $titleInput - Amount: $amountInput');
+                    log.i('Title: ${titleController.text} - Amount: ${amountController.text}');
                   },
                   style: TextButton.styleFrom(foregroundColor: Colors.purple),
                   child: const Text('Add Transaction'))
