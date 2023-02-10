@@ -2,6 +2,7 @@ import 'package:expenses_app/model/transaction.dart';
 import 'package:expenses_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 void main() => runApp(const ExpensesApp());
 
@@ -18,6 +19,10 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  static final Logger log = Utils.getLogger(); 
+
+  String titleInput = '';
+  String amountInput = '';
   final List<Transaction> transactions = [
     Transaction(
       id: "t1", 
@@ -33,7 +38,7 @@ class HomePage extends StatelessWidget {
     )
   ];
   
-  HomePage({super.key});
+  // HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +62,18 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                const TextField(decoration: InputDecoration(labelText: 'Title'),),
-                const TextField(decoration: InputDecoration(labelText: 'Amount'),),
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Title'),
+                  onChanged: (value) { titleInput = value; },
+                ),
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Amount'),
+                  onChanged: (value) { amountInput = value; },
+                ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    log.i('Title: $titleInput - Amount: $amountInput');
+                  },
                   style: TextButton.styleFrom(foregroundColor: Colors.purple),
                   child: const Text('Add Transaction'))
               ],),
