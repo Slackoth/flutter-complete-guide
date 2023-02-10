@@ -1,5 +1,7 @@
 import 'package:expenses_app/model/transaction.dart';
+import 'package:expenses_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(const ExpensesApp());
 
@@ -20,7 +22,7 @@ class HomePage extends StatelessWidget {
     Transaction(
       id: "t1", 
       title: "DS",
-      amount: 450.55,
+      amount: 450.05,
       date: DateTime.now(),
     ),
     Transaction(
@@ -37,6 +39,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.purple,
         title: const Text('Expenses App'),
       ),
       body: Column(
@@ -46,6 +49,21 @@ class HomePage extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: Text('Chart')
+            ),
+          ),
+          Card(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                const TextField(decoration: InputDecoration(labelText: 'Title'),),
+                const TextField(decoration: InputDecoration(labelText: 'Amount'),),
+                TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(foregroundColor: Colors.purple),
+                  child: const Text('Add Transaction'))
+              ],),
             ),
           ),
           Column(
@@ -58,7 +76,7 @@ class HomePage extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(border: Border.all(color: Colors.purple, width: 2)),
                       child: Text(
-                        transaction.amount.toString(),
+                        Utils.usdCurrencyFormat.format(transaction.amount),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -78,7 +96,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          transaction.date.toString(),
+                          DateFormat('MMM dd, yyyy', 'en_US').format(transaction.date),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                             fontSize: 12,
