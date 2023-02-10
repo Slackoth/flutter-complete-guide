@@ -12,8 +12,9 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 300, // List view needs a fixed space
-        child: ListView(
-          children: transactions.map((transaction) {
+        child: ListView.builder( // Loads only visible items
+          itemBuilder: (context, index) {
+            // Repeats this widget itemCount times
             return Card(
               child: Row(
                 children: <Widget>[
@@ -22,7 +23,7 @@ class TransactionList extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     decoration: BoxDecoration(border: Border.all(color: Colors.purple, width: 2)),
                     child: Text(
-                      Utils.usdCurrencyFormat.format(transaction.amount),
+                      Utils.usdCurrencyFormat.format(transactions[index].amount),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -34,7 +35,7 @@ class TransactionList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        transaction.title,
+                        transactions[index].title,
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 16,
@@ -42,7 +43,7 @@ class TransactionList extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        DateFormat('MMM dd, yyyy', 'en_US').format(transaction.date),
+                        DateFormat('MMM dd, yyyy', 'en_US').format(transactions[index].date),
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 12,
@@ -55,7 +56,8 @@ class TransactionList extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
+          },
+          itemCount: transactions.length,
         ),
     );
   }
