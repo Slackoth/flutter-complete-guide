@@ -13,6 +13,11 @@ class ExpensesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Expenses App',
+      theme: ThemeData(
+        colorScheme: ColorScheme
+          .fromSwatch(primarySwatch: Colors.deepPurple)
+          .copyWith(secondary: Colors.amber)
+      ),
       home: HomePage(),
     );
   }
@@ -63,7 +68,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
         title: const Text('Expenses App'),
         actions: [
           IconButton(onPressed: () => _startAddNewTransaction(context), icon: const Icon(Icons.add))
@@ -86,7 +90,6 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _startAddNewTransaction(context),
-        backgroundColor: Colors.purple, 
         child: const Icon(Icons.add),
       ),
     );
