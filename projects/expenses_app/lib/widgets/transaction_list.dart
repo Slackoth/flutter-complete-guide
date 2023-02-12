@@ -6,7 +6,7 @@ import '../utils/utils.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  const TransactionList({super.key, required this.transactions});
+  TransactionList({required this.transactions});
 
   @override
   Widget build(BuildContext context) {
