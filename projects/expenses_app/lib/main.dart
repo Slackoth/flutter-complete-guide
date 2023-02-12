@@ -1,3 +1,4 @@
+import 'package:expenses_app/widgets/transaction_chart/transaction_chart.dart';
 import 'package:expenses_app/widgets/transaction_form.dart';
 import 'package:expenses_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,13 @@ class ExpensesApp extends StatelessWidget {
           )
         )
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {  
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -43,19 +44,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: "t1", 
-    //   title: "DS",
-    //   amount: 450.05,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: "t2", 
-    //   title: "GameCube",
-    //   amount: 299.99,
-    //   date: DateTime.now(),
-    // )
+    Transaction(
+      id: "t1", 
+      title: "DS",
+      amount: 450.05,
+      date: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    Transaction(
+      id: "t2", 
+      title: "GameCube",
+      amount: 10000.99,
+      date: DateTime.now(),
+    )
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((transaction) {
+      return transaction.date.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+    }).toList();
+  }
 
   void _addNewTransaction(String title, double amount) {
     final newTransaction = Transaction(
@@ -87,13 +94,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const Card(
-              elevation: 5,
-              child: SizedBox(
-                width: double.infinity,
-                child: Text('Chart')
-              ),
-            ),
+            TransactionChart(recentTransactions: _recentTransactions),
             TransactionList(transactions: _transactions)
           ]
         ),
