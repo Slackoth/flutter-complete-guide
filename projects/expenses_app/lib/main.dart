@@ -18,6 +18,9 @@ class ExpensesApp extends StatelessWidget {
           .fromSwatch(primarySwatch: Colors.deepPurple)
           .copyWith(secondary: Colors.amber),
         fontFamily: 'Quicksand',
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(fontFamily: 'OpenSans', fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
