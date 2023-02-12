@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     Transaction(
       id: "t2", 
       title: "GameCube",
-      amount: 10000.99,
+      amount: 99999.99,
       date: DateTime.now(),
     )
   ];
