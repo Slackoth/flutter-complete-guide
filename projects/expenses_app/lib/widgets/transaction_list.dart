@@ -12,7 +12,13 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 300, // List view needs a fixed space
-        child: ListView.builder( // Loads only visible items
+        child: transactions.isEmpty ? 
+         Column(children: <Widget>[
+          Text('No expenses...', style: Theme.of(context).textTheme.titleLarge,),
+          const SizedBox(height: 10,), // SizedBox is commonly used as a separator
+          SizedBox(height: 250, child: Image.asset('assets/images/waiting.png', fit: BoxFit.cover,))
+         ],)
+         : ListView.builder( // Loads only visible items
           itemBuilder: (context, index) {
             // Repeats this widget itemCount times
             return Card(
