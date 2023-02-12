@@ -16,7 +16,15 @@ class ExpensesApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme
           .fromSwatch(primarySwatch: Colors.deepPurple)
-          .copyWith(secondary: Colors.amber)
+          .copyWith(secondary: Colors.amber),
+        fontFamily: 'Quicksand',
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+          )
+        )
       ),
       home: HomePage(),
     );
