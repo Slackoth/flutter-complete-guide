@@ -23,7 +23,7 @@ class TransactionChart extends StatelessWidget {
       }
 
       return { 'day': DateFormat.E().format(weekDay), 'amount': totalAmount };
-    });
+    }).reversed.toList();
   }
 
   double get maxSpending {
@@ -41,6 +41,7 @@ class TransactionChart extends StatelessWidget {
         children: 
           groupedTransactionValues.map((data) {
             return Flexible(
+              fit: FlexFit.tight,
               child: TransactionChartBar(
                 label: data['day'] as String, 
                 spendingAmount: data['amount'] as double,

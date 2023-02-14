@@ -22,6 +22,10 @@ class ExpensesApp extends StatelessWidget {
         textTheme: const TextTheme(
           titleLarge: TextStyle(fontFamily: 'OpenSans', fontSize: 18, fontWeight: FontWeight.bold),
         ),
+        // textButtonTheme: const TextButtonThemeData(style: ButtonStyle(
+        //   foregroundColor: MaterialStatePropertyAll(Colors.white),
+        //   backgroundColor: MaterialStatePropertyAll(Colors.deepPurple),
+        // )),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
@@ -53,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     Transaction(
       id: "t2", 
       title: "GameCube",
-      amount: 99999.99,
+      amount: 9999.99,
       date: DateTime.now(),
     )
   ];
@@ -64,12 +68,12 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTransaction = Transaction(
       id: DateTime.now().toIso8601String(), 
       title: title, 
       amount: amount,
-      date: DateTime.now()
+      date: date
     );
 
     // log.i(newTransaction.toString());
