@@ -80,6 +80,12 @@ class _HomePageState extends State<HomePage> {
     setState(() { _transactions.add(newTransaction); });
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((transaction) { return transaction.id == id; });
+    });
+  }
+
   void _startAddNewTransaction(BuildContext context) {
     showModalBottomSheet(context: context, builder: (builder) {
       return TransactionForm(addNewTransaction: _addNewTransaction);
@@ -99,7 +105,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             TransactionChart(recentTransactions: _recentTransactions),
-            TransactionList(transactions: _transactions)
+            TransactionList(transactions: _transactions, deleteTransaction: _deleteTransaction)
           ]
         ),
       ),
