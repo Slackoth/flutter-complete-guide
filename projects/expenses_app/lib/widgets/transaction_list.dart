@@ -14,11 +14,17 @@ class TransactionList extends StatelessWidget {
     return SizedBox(
       // height: 300, // List view needs a fixed space
         child: transactions.isEmpty ? 
-         Column(children: <Widget>[
-          Text('No expenses...', style: Theme.of(context).textTheme.titleLarge,),
-          const SizedBox(height: 10,), // SizedBox is commonly used as a separator
-          SizedBox(height: 250, child: Image.asset('assets/images/waiting.png', fit: BoxFit.cover,))
-         ],)
+         LayoutBuilder(
+           builder: (context, constraints) {
+            final double maxHeight = constraints.maxHeight;
+
+            return Column(children: <Widget>[
+              Text('No expenses...', style: Theme.of(context).textTheme.titleLarge,),
+              const SizedBox(height: 10,), // SizedBox is commonly used as a separator
+              SizedBox(height: maxHeight * 0.6, child: Image.asset('assets/images/waiting.png', fit: BoxFit.cover,))
+            ]);
+           }
+         )
          : ListView.builder( // Loads only visible items
           itemBuilder: (context, index) {
             // Repeats this widget itemCount times
