@@ -12,7 +12,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300, // List view needs a fixed space
+      // height: 300, // List view needs a fixed space
         child: transactions.isEmpty ? 
          Column(children: <Widget>[
           Text('No expenses...', style: Theme.of(context).textTheme.titleLarge,),
