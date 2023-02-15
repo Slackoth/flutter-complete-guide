@@ -56,6 +56,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _showTransactionChart = false;
+  
   final List<Transaction> _transactions = [
     Transaction(
       id: "t1", 
@@ -104,7 +105,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // Recalculated for every time flutter rebuilds the UI
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final AppBar appBar = AppBar(
       title: const Text('Expenses App'),
@@ -114,7 +117,7 @@ class _HomePageState extends State<HomePage> {
     );
     
     final double availableSpace = 
-      MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+      mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top;
     
     final SizedBox transactionList = SizedBox(
       height: availableSpace * (isLandscape ? 0.8 : 0.7),

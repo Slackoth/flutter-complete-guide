@@ -11,6 +11,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    
     return SizedBox(
       // height: 300, // List view needs a fixed space
         child: transactions.isEmpty ? 
@@ -56,7 +58,7 @@ class TransactionList extends StatelessWidget {
                   )
                 ),
                 trailing: 
-                MediaQuery.of(context).size.width > 360 ? 
+                mediaQuery.size.width > 360 ? 
                   TextButton.icon(
                     onPressed: () { deleteTransaction(transactions[index].id); },
                     icon: const Icon(Icons.delete),
