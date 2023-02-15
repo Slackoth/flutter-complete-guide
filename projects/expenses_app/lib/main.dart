@@ -103,15 +103,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Recalculated for every time flutter rebuilds the UI
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     final AppBar appBar = AppBar(
       title: const Text('Expenses App'),
       actions: [
         IconButton(onPressed: () => _startAddNewTransaction(context), icon: const Icon(Icons.add))
       ],
     );
-
+    
     final double availableSpace = 
       MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+    
+    final SizedBox transactionList = SizedBox(
+      height: availableSpace * (isLandscape ? 0.8 : 0.7),
+      child: TransactionList(transactions: _transactions, deleteTransaction: _deleteTransaction)
+    );
+    
+    final SizedBox transactionChart = SizedBox(
+      height: availableSpace * (isLandscape ? 0.8 : 0.3),
+      child: TransactionChart(recentTransactions: _recentTransactions)
+    );
+
 
     return Scaffold(
       appBar: appBar,
@@ -119,23 +133,21 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text('Show Chart'),
-                Switch(value: _showTransactionChart, onChanged: (value) {
-                  setState(() { _showTransactionChart = value; });
-                }),
-              ],
+            if(isLandscape) SizedBox(
+              height: availableSpace * 0.2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Show Chart'),
+                  Switch(value: _showTransactionChart, onChanged: (value) {
+                    setState(() { _showTransactionChart = value; });
+                  }),
+                ],
+              ),
             ),
-            _showTransactionChart ? SizedBox(
-              height: availableSpace * 0.3,
-              child: TransactionChart(recentTransactions: _recentTransactions)
-            ) :
-            SizedBox(
-              height: availableSpace * 0.7,
-              child: TransactionList(transactions: _transactions, deleteTransaction: _deleteTransaction)
-            )
+            if(isLandscape) _showTransactionChart ? transactionChart : transactionList,
+            if(!isLandscape) transactionChart,
+            if(!isLandscape) transactionList,            
           ]
         ),
       ),
