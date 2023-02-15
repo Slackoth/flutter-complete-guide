@@ -63,45 +63,53 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: const InputDecoration(labelText: 'Title'),
-              controller: _titleController,
-              onSubmitted: _onSubmittedTextField,
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Amount'),
-              controller: _amountController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-              onSubmitted: _onSubmittedTextField,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 40, bottom: 40),
-              child: Row(children: <Widget>[
-                Expanded(
-                  child: Text(
-                    _selectedDate == null ? 
-                    'No Date Chosen' : 
-                    'Picked date: ${DateFormat('MMM dd, yyyy', 'en_US').format(_selectedDate!)}' 
-                  ),
-                ),
-                TextButton(onPressed: _showDatePicker, child: const Text('Choose Date'))
-              ],),
-            ),
-            TextButton(
-              onPressed: () { _onSubmittedTextField('submitButton'); },
-              style: ButtonStyle(
-                foregroundColor: const MaterialStatePropertyAll(Colors.white),
-                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary)
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10, 
+            right: 10, 
+            // viewInsets: Anything that's lapping into our view
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10, 
+            left: 10
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: const InputDecoration(labelText: 'Title'),
+                controller: _titleController,
+                onSubmitted: _onSubmittedTextField,
               ),
-              child: const Text('Add Transaction')
-            )
-          ],
+              TextField(
+                decoration: const InputDecoration(labelText: 'Amount'),
+                controller: _amountController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+                onSubmitted: _onSubmittedTextField,
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 40, bottom: 40),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null ? 
+                      'No Date Chosen' : 
+                      'Picked date: ${DateFormat('MMM dd, yyyy', 'en_US').format(_selectedDate!)}' 
+                    ),
+                  ),
+                  TextButton(onPressed: _showDatePicker, child: const Text('Choose Date'))
+                ],),
+              ),
+              TextButton(
+                onPressed: () { _onSubmittedTextField('submitButton'); },
+                style: ButtonStyle(
+                  foregroundColor: const MaterialStatePropertyAll(Colors.white),
+                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary)
+                ),
+                child: const Text('Add Transaction')
+              )
+            ],
+          ),
         ),
       ),
     );
