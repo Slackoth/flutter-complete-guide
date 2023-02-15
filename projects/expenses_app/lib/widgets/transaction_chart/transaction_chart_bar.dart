@@ -10,30 +10,35 @@ class TransactionChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5),
-      child: Column(children: [
-        SizedBox(
-          height: 20,
-          child: FittedBox(child: Text(Utils.usdCurrencyFormat.format(spendingAmount)))
-        ),
-        const SizedBox(height: 4,),
-        SizedBox(height: 60, width: 10, child: Stack(children: <Widget>[
-          Container(decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 1),
-            color: const Color.fromRGBO(220, 220, 220, 1),
-            borderRadius: BorderRadius.circular(10)
-          )),
-          FractionallySizedBox(
-            heightFactor: spendingPorcentageOfTotal,
-            child: Container(decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+    return LayoutBuilder(builder: (context, constraints) {
+      final double maxHeight = constraints.maxHeight;
+
+      return Container(
+        margin: const EdgeInsets.all(5),
+        child: Column(children: [
+          SizedBox(
+            height: maxHeight * 0.15,
+            child: FittedBox(child: Text(Utils.usdCurrencyFormat.format(spendingAmount)))
+          ),
+          const SizedBox(height: 0.05,),
+          SizedBox(height: maxHeight * 0.6, width: 10, child: Stack(children: <Widget>[
+            Container(decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+              color: const Color.fromRGBO(220, 220, 220, 1),
               borderRadius: BorderRadius.circular(10)
             )),
-          ),
-        ],)),
-        Text(label)
-      ]),
-    );
+            FractionallySizedBox(
+              heightFactor: spendingPorcentageOfTotal,
+              child: Container(decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.circular(10)
+              )),
+            ),
+          ],)),
+          const SizedBox(height: 0.05,),
+          SizedBox(height: maxHeight * 0.15, child: FittedBox(child: Text(label)))
+        ]),
+      );
+    }); 
   }
 }
