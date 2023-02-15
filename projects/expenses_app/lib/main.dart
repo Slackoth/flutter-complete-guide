@@ -5,7 +5,15 @@ import 'package:flutter/material.dart';
 
 import 'model/transaction.dart';
 
-void main() => runApp(const ExpensesApp());
+void main() { 
+  // Ensure the app does not allow landscape mode
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
+  runApp(const ExpensesApp()); 
+}
 
 class ExpensesApp extends StatelessWidget {
   const ExpensesApp({super.key});
@@ -47,6 +55,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _showTransactionChart = false;
   final List<Transaction> _transactions = [
     Transaction(
       id: "t1", 
@@ -108,11 +117,21 @@ class _HomePageState extends State<HomePage> {
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('Show Chart'),
+                Switch(value: _showTransactionChart, onChanged: (value) {
+                  setState(() { _showTransactionChart = value; });
+                }),
+              ],
+            ),
+            _showTransactionChart ? SizedBox(
               height: availableSpace * 0.3,
               child: TransactionChart(recentTransactions: _recentTransactions)
-            ),
+            ) :
             SizedBox(
               height: availableSpace * 0.7,
               child: TransactionList(transactions: _transactions, deleteTransaction: _deleteTransaction)
