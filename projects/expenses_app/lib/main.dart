@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:expenses_app/utils/utils.dart';
 import 'package:expenses_app/widgets/transaction_chart/transaction_chart.dart';
 import 'package:expenses_app/widgets/transaction_form.dart';
 import 'package:expenses_app/widgets/transaction_list/transaction_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'model/transaction.dart';
 
@@ -74,7 +76,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  static final Logger _log = Utils.getLogger();
+  
   bool _showTransactionChart = false;
   
   final List<Transaction> _transactions = [
@@ -141,6 +145,28 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     ), _showTransactionChart ? transactionChart : transactionList,];
+  }
+
+  /* Widget Lifecycle */
+  @override
+  void initState() {
+    super.initState();
+    // Whenever my lifecycle state changes, 
+    // call the didChangeAppLifecycleState method via an observer
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Clear observer to avoid memory leaks
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    _log.i('didChangeAppLifecycleState() - ${state.name}');
   }
 
   @override
