@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:expenses_app/widgets/transaction_chart/transaction_chart.dart';
 import 'package:expenses_app/widgets/transaction_form.dart';
 import 'package:expenses_app/widgets/transaction_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'model/transaction.dart';
@@ -106,15 +109,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // Recalculated for every time flutter rebuilds the UI
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    
+
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final AppBar appBar = AppBar(
+    final PreferredSizeWidget appBar = Platform.isIOS ? CupertinoNavigationBar(
+      middle: const Text('Expenses App'), // AppBar title property
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min, 
+          children: <Widget>[
+          // No IconButton for IOS, we have to make a custom Widget
+          GestureDetector(
+            onTap: () { _startAddNewTransaction(context); },
+            child: const Icon(CupertinoIcons.add),
+          )
+      ],
+      ), // AppBar actions property
+    ) 
+    : AppBar(
       title: const Text('Expenses App'),
       actions: [
         IconButton(onPressed: () => _startAddNewTransaction(context), icon: const Icon(Icons.add))
       ],
-    );
+    ) as PreferredSizeWidget;
     
     final double availableSpace = 
       mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top;
@@ -129,10 +145,8 @@ class _HomePageState extends State<HomePage> {
       child: TransactionChart(recentTransactions: _recentTransactions)
     );
 
-
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final Widget scaffoldBody = SafeArea( // Avoids operating system interfaces (useful on IOS)
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -142,7 +156,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text('Show Chart'),
-                  Switch(value: _showTransactionChart, onChanged: (value) {
+                  Switch.adaptive(
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                    value: _showTransactionChart, onChanged: (value) {
                     setState(() { _showTransactionChart = value; });
                   }),
                 ],
@@ -154,11 +170,19 @@ class _HomePageState extends State<HomePage> {
           ]
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _startAddNewTransaction(context),
-        child: const Icon(Icons.add),
-      ),
+    );
+
+    return Platform.isIOS ? CupertinoPageScaffold(
+      child: scaffoldBody) 
+      : Scaffold(
+        appBar: appBar,
+        body: scaffoldBody,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Platform.isIOS ? const SizedBox() :
+        FloatingActionButton(
+          onPressed: () => _startAddNewTransaction(context),
+          child: const Icon(Icons.add),
+        ),
     );
   }
 }
