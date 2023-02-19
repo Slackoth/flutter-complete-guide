@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:expenses_app/utils/utils.dart';
+import 'package:expenses_app/widgets/adaptive_widgets/adaptive_text_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -99,7 +103,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       'Picked date: ${DateFormat('MMM dd, yyyy', 'en_US').format(_selectedDate!)}' 
                     ),
                   ),
-                  TextButton(onPressed: _showDatePicker, child: const Text('Choose Date'))
+                  AdaptiveTextButton(text: 'Choose Date', onPressed: _showDatePicker)
                 ],),
               ),
               TextButton(
