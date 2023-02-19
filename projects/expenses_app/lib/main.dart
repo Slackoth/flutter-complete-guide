@@ -23,7 +23,23 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return Platform.isIOS ? const CupertinoApp(
+      title: 'Expenses App',
+      theme: CupertinoThemeData(
+        primaryColor: CupertinoColors.systemIndigo,
+        primaryContrastingColor: CupertinoColors.systemYellow,
+        scaffoldBackgroundColor: CupertinoColors.secondarySystemBackground,
+        textTheme: CupertinoTextThemeData (
+          textStyle: TextStyle(fontFamily: 'Quicksand'),
+          navTitleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+          )
+        ),
+      ),
+      home: HomePage(),
+    ) : MaterialApp(
       title: 'Expenses App',
       theme: ThemeData(
         colorScheme: ColorScheme
@@ -31,6 +47,7 @@ class ExpensesApp extends StatelessWidget {
           .copyWith(secondary: Colors.amber),
         fontFamily: 'Quicksand',
         textTheme: const TextTheme(
+          titleMedium: TextStyle(fontFamily: 'OpenSans', fontSize: 16, fontWeight: FontWeight.bold),
           titleLarge: TextStyle(fontFamily: 'OpenSans', fontSize: 18, fontWeight: FontWeight.bold),
         ),
         // textButtonTheme: const TextButtonThemeData(style: ButtonStyle(
@@ -155,7 +172,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text('Show Chart'),
+                  Text('Show Chart', style: Theme.of(context).textTheme.titleLarge,),
                   Switch.adaptive(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: _showTransactionChart, onChanged: (value) {
