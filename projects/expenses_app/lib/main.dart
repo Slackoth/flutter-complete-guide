@@ -122,6 +122,27 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  List<Widget> _buildPortraitContent(SizedBox transactionChart, SizedBox transactionList) {
+    return [transactionChart, transactionList];
+  }
+
+  List<Widget> _buildLandscapeContent(double availableSpace, SizedBox transactionChart, SizedBox transactionList) {
+    return [SizedBox(
+      height: availableSpace * 0.2,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('Show Chart', style: Theme.of(context).textTheme.titleLarge,),
+          Switch.adaptive(
+            activeColor: Theme.of(context).colorScheme.secondary,
+            value: _showTransactionChart, onChanged: (value) {
+            setState(() { _showTransactionChart = value; });
+          }),
+        ],
+      ),
+    ), _showTransactionChart ? transactionChart : transactionList,];
+  }
+
   @override
   Widget build(BuildContext context) {
     // Recalculated for every time flutter rebuilds the UI
@@ -167,23 +188,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if(isLandscape) SizedBox(
-              height: availableSpace * 0.2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Show Chart', style: Theme.of(context).textTheme.titleLarge,),
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).colorScheme.secondary,
-                    value: _showTransactionChart, onChanged: (value) {
-                    setState(() { _showTransactionChart = value; });
-                  }),
-                ],
-              ),
-            ),
-            if(isLandscape) _showTransactionChart ? transactionChart : transactionList,
-            if(!isLandscape) transactionChart,
-            if(!isLandscape) transactionList,            
+            if(isLandscape) ..._buildLandscapeContent(availableSpace, transactionChart, transactionList),
+            if(!isLandscape) ..._buildPortraitContent(transactionChart, transactionList)         
           ]
         ),
       ),
