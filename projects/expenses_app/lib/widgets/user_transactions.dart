@@ -1,6 +1,6 @@
 import 'package:expenses_app/utils/utils.dart';
 import 'package:expenses_app/widgets/transaction_form.dart';
-import 'package:expenses_app/widgets/transaction_list.dart';
+import 'package:expenses_app/widgets/transaction_list/transaction_list.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 

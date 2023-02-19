@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:expenses_app/utils/utils.dart';
 import 'package:expenses_app/widgets/adaptive_widgets/adaptive_text_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';

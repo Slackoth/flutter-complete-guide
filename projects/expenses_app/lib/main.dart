@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:expenses_app/widgets/transaction_chart/transaction_chart.dart';
 import 'package:expenses_app/widgets/transaction_form.dart';
-import 'package:expenses_app/widgets/transaction_list.dart';
+import 'package:expenses_app/widgets/transaction_list/transaction_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
