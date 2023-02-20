@@ -10,6 +10,7 @@ class CategoriesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('DeliMeals')),
       body: GridView(
+        padding: const EdgeInsets.all(25),
         // Slivers are scrollable views
         // MaxCrossAxisExtents allows to define a maximum width for a grid
         // for each grid item. And then automatically create as many columns
