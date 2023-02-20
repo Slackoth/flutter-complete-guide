@@ -5,6 +5,9 @@ class CategoryMealsScreen extends StatelessWidget {
   // final String categoryTitle;
 
   // const CategoryMealsScreen({super.key, required this.categoryId, required this.categoryTitle});
+
+  static const routeName = '/category-meals';
+
   const CategoryMealsScreen({super.key});
 
   @override
