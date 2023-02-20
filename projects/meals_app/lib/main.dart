@@ -28,6 +28,7 @@ class DeliMealsApp extends StatelessWidget {
       // initialRoute: '/route',
       routes: {
         '/': (context) => const CategoriesScreen(),
+        /* Recieves a Map<String, String> [id, title] */
         CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen()
       },
     );
