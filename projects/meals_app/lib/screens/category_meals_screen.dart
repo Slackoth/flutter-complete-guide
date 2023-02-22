@@ -23,9 +23,9 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
   late List<Meal> categoryMeals;
   bool _doneInitializing = false;
    
-  void _removeMeal(String mealId) {
-    setState(() { categoryMeals.removeWhere((meal) => meal.id == mealId); });
-  }
+  // void _removeMeal(String mealId) {
+  //   setState(() { categoryMeals.removeWhere((meal) => meal.id == mealId); });
+  // }
 
   @override
   void didChangeDependencies() { // Runs befores build and has the context
@@ -53,8 +53,7 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
           imageUrl: categoryMeals[index].imageUrl,
           duration: categoryMeals[index].duration, 
           complexity: categoryMeals[index].complexity, 
-          affordability: categoryMeals[index].affordability,
-          removeMeal: _removeMeal,
+          affordability: categoryMeals[index].affordability
         ), 
         itemCount: categoryMeals.length,
       )

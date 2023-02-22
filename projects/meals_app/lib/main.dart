@@ -25,6 +25,7 @@ class _DeliMealsAppState extends State<DeliMealsApp> {
     'isVegan': false
   };
   List<Meal> _meals = DUMMY_MEALS;
+  List<Meal> _favoriteMeals = [];
 
   void _saveFilters(Map<String, bool> filters) {
     setState(() { 
@@ -51,6 +52,23 @@ class _DeliMealsAppState extends State<DeliMealsApp> {
     });
   }
 
+  void _toggleFavorite(String mealId) {
+    final index = _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+
+    if(index >= 0) {
+      setState(() { _favoriteMeals.removeAt(index); });
+    }
+    else {
+      setState(() {
+        _favoriteMeals.add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
+      });
+    }
+  }
+
+  bool _isMealFavorite(String mealId) {
+    return _favoriteMeals.any((meal) => meal.id == mealId);
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -71,10 +89,10 @@ class _DeliMealsAppState extends State<DeliMealsApp> {
       // home: const CategoriesScreen(),
       // initialRoute: '/route',
       routes: {
-        '/': (context) => const TabScreen(),
+        '/': (context) => TabScreen(favoriteMeals: _favoriteMeals),
         /* Recieves a Map<String, String> [id, title] */
         CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(meals: _meals),
-        MealDetailScreen.routeName:(context) => const MealDetailScreen(),
+        MealDetailScreen.routeName:(context) => MealDetailScreen(toggleFavorite: _toggleFavorite, isMealFavorite: _isMealFavorite),
         FiltersScreen.routeName:(context) => FiltersScreen(saveFilters: _saveFilters, currentFilters: _filters),
       },
       // When route is not mapped
