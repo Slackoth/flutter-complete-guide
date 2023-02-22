@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../domain/models/meal.dart';
 
 const DUMMY_MEALS = [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/screens/categories_screen.dart';
 import 'package:meals_app/screens/category_meals_screen.dart';
+import 'package:meals_app/screens/meal_detail_screen.dart';
 
 void main() => runApp(const DeliMealsApp());
 
@@ -29,8 +30,13 @@ class DeliMealsApp extends StatelessWidget {
       routes: {
         '/': (context) => const CategoriesScreen(),
         /* Recieves a Map<String, String> [id, title] */
-        CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen()
+        CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
+        MealDetailScreen.routeName:(context) => const MealDetailScreen()
       },
+      // When route is not mapped
+      onGenerateRoute: (settings) => MaterialPageRoute(builder: (context) => const CategoriesScreen()),
+      // When onGenerateRoute fails
+      onUnknownRoute: (settings) => MaterialPageRoute(builder: (context) => const CategoriesScreen()),
     );
   }
 }
