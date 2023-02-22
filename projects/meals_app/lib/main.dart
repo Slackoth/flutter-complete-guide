@@ -4,11 +4,52 @@ import 'package:meals_app/screens/category_meals_screen.dart';
 import 'package:meals_app/screens/filters_screen.dart';
 import 'package:meals_app/screens/meal_detail_screen.dart';
 import 'package:meals_app/screens/tab_screen.dart';
+import 'package:meals_app/utils/dummy_meals.dart';
+
+import 'domain/models/meal.dart';
 
 void main() => runApp(const DeliMealsApp());
 
-class DeliMealsApp extends StatelessWidget {
+class DeliMealsApp extends StatefulWidget {
   const DeliMealsApp({super.key});
+
+  @override
+  State<DeliMealsApp> createState() => _DeliMealsAppState();
+}
+
+class _DeliMealsAppState extends State<DeliMealsApp> {
+  Map<String, bool> _filters = {
+    'isGlutenFree': false,
+    'isLactoseFree': false,
+    'isVegetarian': false,
+    'isVegan': false
+  };
+  List<Meal> _meals = DUMMY_MEALS;
+
+  void _saveFilters(Map<String, bool> filters) {
+    setState(() { 
+      _filters = filters; 
+      _meals = DUMMY_MEALS.where((meal) {
+        if(_filters['isGlutenFree']! && !meal.isGlutenFree) {
+          return false;
+        }
+        
+        if(_filters['isLactoseFree']! && !meal.isLactoseFree) {
+          return false;
+        }
+
+        if(_filters['isVegetarian']! && !meal.isVegetarian) {
+          return false;
+        }
+
+        if(_filters['isVegan']! && !meal.isVegan) {
+          return false;
+        }
+
+        return true;
+      }).toList();
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -32,9 +73,9 @@ class DeliMealsApp extends StatelessWidget {
       routes: {
         '/': (context) => const TabScreen(),
         /* Recieves a Map<String, String> [id, title] */
-        CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
+        CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(meals: _meals),
         MealDetailScreen.routeName:(context) => const MealDetailScreen(),
-        FiltersScreen.routeName:(context) => const FiltersScreen(),
+        FiltersScreen.routeName:(context) => FiltersScreen(saveFilters: _saveFilters, currentFilters: _filters),
       },
       // When route is not mapped
       onGenerateRoute: (settings) => MaterialPageRoute(builder: (context) => const CategoriesScreen()),
