@@ -13,6 +13,11 @@ class ShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme
+          .fromSwatch(primarySwatch: Colors.deepPurple)
+          .copyWith(secondary: Colors.amber),
+      ),
       home: ProductsOverviewScreen(),
     );
   }
