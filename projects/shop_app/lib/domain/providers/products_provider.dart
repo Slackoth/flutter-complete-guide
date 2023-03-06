@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/domain/providers/product_provider.dart';
 
 class ProductsProvider with ChangeNotifier {
+  // Shouldn't do this here on the provider, instead, on a stateful widget
+  // bool _showFavoritesOnly = false;
+
   // ignore: prefer_final_fields
   List<ProductProvider> _products = [
     ProductProvider(
@@ -39,10 +42,35 @@ class ProductsProvider with ChangeNotifier {
   ];
 
   List<ProductProvider> get products {
+    // Shouldn't do this here on the provider, instead, on a stateful widget
+    // if(_showFavoritesOnly) {
+    //   return _products.where((product) => product.isFavorite).toList();
+    // }
+    // return [..._products];
     return [..._products];
+  }
+
+  List<ProductProvider> get favoriteProducts {
+    // Shouldn't do this here on the provider, instead, on a stateful widget
+    // if(_showFavoritesOnly) {
+    //   return _products.where((product) => product.isFavorite).toList();
+    // }
+    // return [..._products];
+    return _products.where((product) => product.isFavorite).toList();
   }
 
   ProductProvider findById(String id) {
     return _products.firstWhere((product) => product.id == id);
   }
+
+  // Shouldn't do this here on the provider, instead, on a stateful widget
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
+
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
 }

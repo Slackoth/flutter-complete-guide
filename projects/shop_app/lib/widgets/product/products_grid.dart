@@ -6,12 +6,16 @@ import 'package:shop_app/widgets/product/product_item.dart';
 import '../../domain/providers/product_provider.dart';
 
 class ProductsGrid extends StatelessWidget {
-  const ProductsGrid({super.key});
+  
+  const ProductsGrid({super.key, required this.showFavorites});
+
+  final bool showFavorites;
 
   @override
   Widget build(BuildContext context) {
     // Only usable if some parent component has the Provider
-    List<ProductProvider> loadedProducts = Provider.of<ProductsProvider>(context).products;
+    ProductsProvider provider = Provider.of<ProductsProvider>(context);
+    List<ProductProvider> loadedProducts = showFavorites ? provider.favoriteProducts : provider.products;
 
     return GridView.builder(
       padding: const EdgeInsets.all(10),
