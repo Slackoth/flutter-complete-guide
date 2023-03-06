@@ -14,6 +14,8 @@ class ShopApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // ChangeNotifierProvider.create should be used whenever a new instance 
+    // of an object is passed
     return ChangeNotifierProvider(
       // All listening children will have the same instance of ProductsProvider
       // So any change done to this class will rebuild again those children

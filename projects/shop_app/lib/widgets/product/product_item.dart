@@ -11,7 +11,8 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final ProductProvider product = Provider.of<ProductProvider>(context);
+    // Will not rebuild whole component 
+    final ProductProvider product = Provider.of<ProductProvider>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -25,10 +26,16 @@ class ProductItem extends StatelessWidget {
           },
           child: GridTileBar(
             backgroundColor: Colors.black87,
-            leading: IconButton(
-              color: theme.colorScheme.secondary,
-              onPressed: () => product.toggleIsFavorite(),
-              icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border)
+            // Consumer works the same way of Provider.of<>() but the advantage is
+            // that it can be used on specific components, rebuilding only the specific
+            // component, such as the widget on the leading
+            leading: Consumer<ProductProvider>(
+              child: const Text('Component that must\'nt change passed as the child parameter'),
+              builder: (context, value, child) => IconButton(
+                color: theme.colorScheme.secondary,
+                onPressed: () => value.toggleIsFavorite(),
+                icon: Icon(value.isFavorite ? Icons.favorite : Icons.favorite_border)
+              ),
             ),
             trailing: IconButton(
               color: theme.colorScheme.secondary,
