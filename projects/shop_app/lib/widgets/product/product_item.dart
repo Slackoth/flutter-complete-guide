@@ -10,8 +10,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    NavigatorState navigator = Navigator.of(context);
+    final ThemeData theme = Theme.of(context);
+    final NavigatorState navigator = Navigator.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
