@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/domain/providers/products_provider.dart';
 import 'package:shop_app/widgets/product/product_item.dart';
 
-import '../../domain/models/product.dart';
+import '../../domain/providers/product_provider.dart';
 
 class ProductsGrid extends StatelessWidget {
   const ProductsGrid({super.key});
@@ -11,7 +11,7 @@ class ProductsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Only usable if some parent component has the Provider
-    List<Product> loadedProducts = Provider.of<ProductsProvider>(context).products;
+    List<ProductProvider> loadedProducts = Provider.of<ProductsProvider>(context).products;
 
     return GridView.builder(
       padding: const EdgeInsets.all(10),
@@ -23,7 +23,10 @@ class ProductsGrid extends StatelessWidget {
         mainAxisSpacing: 20
       ), 
       itemBuilder: (context, index) {
-        return ProductItem(product: loadedProducts[index]);
+        return ChangeNotifierProvider(
+          create: (context) => loadedProducts[index],
+          child: const ProductItem()
+        );
       },
     );
   }
