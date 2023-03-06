@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/domain/providers/cart_provider.dart';
 import 'package:shop_app/domain/providers/products_provider.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
@@ -16,10 +17,13 @@ class ShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ChangeNotifierProvider.create should be used whenever a new instance 
     // of an object is passed
-    return ChangeNotifierProvider(
-      // All listening children will have the same instance of ProductsProvider
-      // So any change done to this class will rebuild again those children
-      create: (context) => ProductsProvider(),
+    return MultiProvider(
+      providers: [
+        // All listening children will have the same instance of ProductsProvider
+        // So any change done to this class will rebuild again those children
+        ChangeNotifierProvider(create: (context) => ProductsProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

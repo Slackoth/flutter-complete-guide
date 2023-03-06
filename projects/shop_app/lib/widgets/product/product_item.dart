@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/domain/providers/cart_provider.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 
 import '../../domain/providers/product_provider.dart';
@@ -11,6 +12,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
+    final CartProvider cart = Provider.of<CartProvider>(context, listen: false);
     // Will not rebuild whole component 
     final ProductProvider product = Provider.of<ProductProvider>(context, listen: false);
 
@@ -39,7 +41,9 @@ class ProductItem extends StatelessWidget {
             ),
             trailing: IconButton(
               color: theme.colorScheme.secondary,
-              onPressed: () {},
+              onPressed: () {
+                cart.addItem(product.id, product.price, product.title);
+              },
               icon: const Icon(Icons.shopping_cart)
             ),
             title: Text(product.title, textAlign: TextAlign.center,),

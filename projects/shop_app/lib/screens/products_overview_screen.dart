@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/domain/providers/cart_provider.dart';
+import 'package:shop_app/widgets/cart/cart_badge.dart';
 
 import '../widgets/product/products_grid.dart';
 
@@ -48,6 +51,17 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 child: Text('Show All')
               ),
             ],
+          ),
+          Consumer<CartProvider>(
+            builder: (context, value, child) => CartBadge(
+              value: value.size,
+              child: child!
+            ),
+            // It wont be rebuild because it's outside of the builder function
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.shopping_cart)
+            ),
           )
         ],
       ),
