@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:shop_app/screens/orders_screen.dart';
 
-class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+class MainDrawer extends StatelessWidget {
+  const MainDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/cart/cart_badge.dart';
 
 import '../widgets/product/products_grid.dart';
+import 'main_drawer.dart';
 
 enum FilterOptions  { favorites, all }
 
@@ -26,6 +27,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     // final ProductsProvider provider = Provider.of<ProductsProvider>(context, listen: false);
 
     return Scaffold(
+      drawer: const MainDrawer(),
       appBar: AppBar(
         title: const Text('Shop App'),
         actions: [
