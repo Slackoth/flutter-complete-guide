@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/domain/providers/cart_provider.dart';
+import 'package:shop_app/domain/providers/orders_provider.dart';
 import 'package:shop_app/domain/providers/products_provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
+import 'package:shop_app/screens/orders_screen.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
 
@@ -24,6 +26,7 @@ class ShopApp extends StatelessWidget {
         // So any change done to this class will rebuild again those children
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => OrdersProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -36,7 +39,8 @@ class ShopApp extends StatelessWidget {
         routes: {
           ProductsOverviewScreen.routeName: (context) => const ProductsOverviewScreen(),
           ProductDetailScreen.routeName:(context) => const ProductDetailScreen(),
-          CartScreen.routeName:(context) => const CartScreen()
+          CartScreen.routeName: (context) => const CartScreen(),
+          OrdersScreen.routeName: (context) => const OrdersScreen()
         },
       ),
     );
