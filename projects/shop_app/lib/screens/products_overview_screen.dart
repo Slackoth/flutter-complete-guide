@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/domain/providers/cart_provider.dart';
+import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/cart/cart_badge.dart';
 
 import '../widgets/product/products_grid.dart';
@@ -21,6 +22,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final NavigatorState navigator = Navigator.of(context);
     // final ProductsProvider provider = Provider.of<ProductsProvider>(context, listen: false);
 
     return Scaffold(
@@ -59,7 +61,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             ),
             // It wont be rebuild because it's outside of the builder function
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                navigator.pushNamed(CartScreen.routeName);
+              },
               icon: const Icon(Icons.shopping_cart)
             ),
           )
