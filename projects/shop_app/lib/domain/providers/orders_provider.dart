@@ -14,7 +14,8 @@ class OrdersProvider with ChangeNotifier {
     _orders.insert(0, OrderItem(
       id: DateTime.now().toIso8601String(), 
       amount: amount, 
-      products: items
+      products: items,
+      dateTime: DateTime.now()
     ));
     notifyListeners();
   }
