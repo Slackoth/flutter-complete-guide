@@ -70,6 +70,15 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProduct(ProductProvider editedProduct) {
+    final index = _products.indexWhere((product) => product.id == editedProduct.id);
+
+    if(index >= 0) {
+      _products[index] = editedProduct;
+      notifyListeners();
+    }
+  }
+
   // Shouldn't do this here on the provider, instead, on a stateful widget
   // void showAll() {
   //   _showFavoritesOnly = false;
