@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/domain/providers/product_provider.dart';
+import 'package:shop_app/domain/providers/products_provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({super.key});
@@ -20,13 +22,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if(!_imageUrlFocusNode.hasFocus) {
+      String text = _imageUrlCtrl.text;
+        
+      if(
+        (!text.toLowerCase().startsWith('http') 
+        && !text.toLowerCase().startsWith('https'))
+        || (!text.toLowerCase().endsWith('.png') 
+        && !text.toLowerCase().endsWith('.jpg')
+        && !text.toLowerCase().endsWith('.jpeg'))
+      ) return;
+      
       setState(() {});
     }
   }
 
   void _saveForm() {
-    // Allows to take all textfield values
+    // Triggers validator handle
+    final bool? isValid = _form.currentState?.validate();
+
+    if(isValid != null && !isValid) {
+      return;
+    }
+
+    // Triggers on save handle
     _form.currentState?.save();
+    Provider.of<ProductsProvider>(context, listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -71,6 +92,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 // Focuses price textfield
                 focusScope.requestFocus(_priceFocusNode);
               },
+              validator: (value) {
+                if(value != null) {
+                  return value.isEmpty ? 'Please provide a value.' : null;
+                }
+
+                return 'Please provide a value.';
+              },
               onSaved: (newValue) {
                 _editedProduct = ProductProvider(
                   id: '',
@@ -90,6 +118,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 // Focuses description textfield
                 focusScope.requestFocus(_descriptionFocusNode);
               },
+              validator: (value) {
+                if(value != null) {
+                  if(value.isEmpty) return 'Please provide a value.';
+                  
+                  final double? price = double.tryParse(value);
+
+                  if(price == null) {
+                    return 'Please provide a valid number.';
+                  } else if(price <= 0) {
+                    return 'Please provide a number greater than 0.';
+                  }
+                  
+                  return null;
+                }
+
+                return 'Please provide a value.';
+              },
               onSaved: (newValue) {
                 _editedProduct = ProductProvider(
                   id: '',
@@ -105,6 +150,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
               maxLines: 3,
               keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.next,
+              validator: (value) {
+                if(value != null) {
+                  if(value.isEmpty) return 'Please provide a value.';
+                  
+                  if(value.length < 10) return 'This field must be at least 10 characters.';
+                  
+                  return null;
+                }
+
+                return 'Please provide a value.';
+              },
               onSaved: (newValue) {
                 _editedProduct = ProductProvider(
                   id: '',
@@ -137,6 +193,30 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     focusNode: _imageUrlFocusNode,
                     onEditingComplete: () => setState(() {}),
                     onFieldSubmitted: (value) => _saveForm(),
+                    validator: (value) {
+                      if(value != null) {
+                        if(value.isEmpty) return 'Please provide a value.';
+                        
+                        if(
+                          !value.toLowerCase().startsWith('http') 
+                          && !value.toLowerCase().startsWith('https')
+                        ) {
+                          return 'Please provide a valid URL.';
+                        }
+
+                        if(
+                          !value.toLowerCase().endsWith('.png') 
+                          && !value.toLowerCase().endsWith('.jpg')
+                          && !value.toLowerCase().endsWith('.jpeg')
+                        ) {
+                          return 'Please provide a valid image format.';
+                        }
+                        
+                        return null;
+                      }
+
+                      return 'Please provide a value.';
+                    },
                     onSaved: (newValue) {
                       _editedProduct = ProductProvider(
                         id: '',

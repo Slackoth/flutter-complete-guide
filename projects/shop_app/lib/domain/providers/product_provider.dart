@@ -22,6 +22,26 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  static ProductProvider copy(ProductProvider product, String id) {
+    return ProductProvider(
+      id: id, 
+      title: product.title, 
+      description: product.description, 
+      imageUrl: product.imageUrl,
+      price: product.price
+    );
+  }
+
+  static ProductProvider fullCopy(ProductProvider product) {
+    return ProductProvider(
+      id: product.id, 
+      title: product.title, 
+      description: product.description, 
+      imageUrl: product.imageUrl,
+      price: product.price
+    );
+  }
+
   static ProductProvider empty() {
     return ProductProvider(id: '', title: '', description: '', imageUrl: '', price: 0);
   }

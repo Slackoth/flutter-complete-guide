@@ -63,6 +63,13 @@ class ProductsProvider with ChangeNotifier {
     return _products.firstWhere((product) => product.id == id);
   }
 
+  void addProduct(ProductProvider product) {
+    final ProductProvider newProduct = ProductProvider.copy(product, DateTime.now().toIso8601String());
+
+    _products.add(newProduct);
+    notifyListeners();
+  }
+
   // Shouldn't do this here on the provider, instead, on a stateful widget
   // void showAll() {
   //   _showFavoritesOnly = false;
