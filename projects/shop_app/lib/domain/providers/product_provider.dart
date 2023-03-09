@@ -21,4 +21,8 @@ class ProductProvider with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
   }
+
+  static ProductProvider empty() {
+    return ProductProvider(id: '', title: '', description: '', imageUrl: '', price: 0);
+  }
 }
