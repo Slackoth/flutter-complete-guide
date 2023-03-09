@@ -79,6 +79,11 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
+  void deleteProduct(String id) {
+    _products.removeWhere((product) => product.id == id);
+    notifyListeners();
+  }
+
   // Shouldn't do this here on the provider, instead, on a stateful widget
   // void showAll() {
   //   _showFavoritesOnly = false;
