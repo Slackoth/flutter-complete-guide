@@ -17,6 +17,23 @@ class ProductProvider with ChangeNotifier {
     this.isFavorite = false
   });
 
+  ProductProvider.fromJson(Map<String, dynamic> json) : 
+    id = json['id'],
+    title = json['title'],
+    description = json['description'],
+    imageUrl = json['imageUrl'],
+    price = json['price'],
+    isFavorite = json['isFavorite'];
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'description': description,
+    'imageUrl': imageUrl,
+    'price': price,
+    'isFavorite': isFavorite
+  };
+
   void toggleIsFavorite() {
     isFavorite = !isFavorite;
     notifyListeners();
