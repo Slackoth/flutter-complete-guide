@@ -1,3 +1,3 @@
 class ShopAppUtils {
-  static const firebaseUrl = 'https://flutter-complete-guide-db-default-rtdb.firebaseio.com/';
+  static const firebaseUrl = 'flutter-complete-guide-db-default-rtdb.firebaseio.com';
 }
