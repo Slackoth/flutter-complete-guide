@@ -7,11 +7,12 @@ class UserProductItem extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
-  final VoidCallback deleteProduct;
+  final Function deleteProduct;
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    ScaffoldMessengerState messanger = ScaffoldMessenger.of(context);
 
     return ListTile(
       title: Text(title),
@@ -28,7 +29,13 @@ class UserProductItem extends StatelessWidget {
             color: theme.colorScheme.primary,
             icon: const Icon(Icons.edit)),
           IconButton(
-            onPressed: deleteProduct,
+            onPressed: () async {
+              try {
+                await deleteProduct();
+              } catch (error) {
+                messanger.showSnackBar(const SnackBar(content: Text('Deleting failed')));
+              }
+            },
             color: theme.colorScheme.error,
             icon: const Icon(Icons.delete))
         ]),

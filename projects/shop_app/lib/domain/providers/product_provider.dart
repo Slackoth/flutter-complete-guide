@@ -24,11 +24,12 @@ class ProductProvider with ChangeNotifier {
     price = json['price'],
     isFavorite = json['isFavorite'];
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson(bool isFavorite) => {
     'title': title,
     'description': description,
     'imageUrl': imageUrl,
     'price': price,
+    'isFavorite': isFavorite
   };
 
   void toggleIsFavorite() {

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/Utils/shop_app_utils.dart';
+import 'package:shop_app/domain/exceptions/http/http_exception.dart';
 import 'package:shop_app/domain/providers/product_provider.dart';
 
 class ProductsProvider with ChangeNotifier {
@@ -53,7 +53,8 @@ class ProductsProvider with ChangeNotifier {
     try {
       final http.Response response = await http.get(url);
       final Map<String, dynamic> data = json.decode(response.body) as Map<String, dynamic>;
-
+      
+      _products.clear();
       data.forEach((key, value) {
         _products.add(ProductProvider.fromJson(value, key));
       });
@@ -96,7 +97,7 @@ class ProductsProvider with ChangeNotifier {
     final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
 
     try {
-      final http.Response response = await http.post(url, body: json.encode(product.toJson()));
+      final http.Response response = await http.post(url, body: json.encode(product.toJson(false)));
       final ProductProvider newProduct = ProductProvider.copy(
         product, 
         json.decode(response.body)['name']
@@ -114,7 +115,7 @@ class ProductsProvider with ChangeNotifier {
       final Uri url = Uri.https(ShopAppUtils.firebaseUrl, '/products/${editedProduct.id}.json');
       
       try {
-        await http.patch(url, body: json.encode(editedProduct.toJson()));
+        await http.patch(url, body: json.encode(editedProduct.toJson(editedProduct.isFavorite)));
       } catch (error) { rethrow; }
 
       _products[index] = editedProduct;
@@ -124,9 +125,21 @@ class ProductsProvider with ChangeNotifier {
     return Future.value(null);
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
+    final Uri url = Uri.https(ShopAppUtils.firebaseUrl, '/products/$id.json');
+    final existingProduct = ProductProvider.fullCopy(findById(id));
+
     _products.removeWhere((product) => product.id == id);
     notifyListeners();
+    
+    // Optimistic updating pattern 
+    final http.Response response = await http.delete(url);
+    
+    if(response.statusCode >= 400) {
+      _products.add(existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product.');
+    }
   }
 
   // Shouldn't do this here on the provider, instead, on a stateful widget
