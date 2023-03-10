@@ -53,52 +53,52 @@ class _EditProductScreenState extends State<EditProductScreen> {
     final NavigatorState navigator = Navigator.of(context);
     final ProductsProvider provider = Provider.of<ProductsProvider>(context, listen: false);
 
-    if(_initProduct != null) {
-      provider.updateProduct(_editedProduct);
-    }
-    else {
-      // provider.addProduct(_editedProduct)
-      //   .catchError((error) {
-      //     return showDialog<Null>(
-      //       context: context, 
-      //       builder: (context) => AlertDialog(
-      //         title: const Text('An error ocurred!'),
-      //         content: const Text('Something went wrong...'),
-      //         actions: [
-      //           TextButton(
-      //             onPressed: () { navigator.pop(); },
-      //             child: const Text('Close')
-      //           )
-      //         ],
-      //       ),
-      //     );
-      //   })
-      //   .then((value) {
-      //     setState(() { _isLoading = false; });
-      //     navigator.pop();
-      //   });
-
-      try {
+    try {
+      if(_initProduct != null) {
+        await provider.updateProduct(_editedProduct);
+      }
+      else {
         await provider.addProduct(_editedProduct);
-      } catch (error) {
-        await showDialog<Null>(
-          context: context, 
-          builder: (context) => AlertDialog(
-            title: const Text('An error ocurred!'),
-            content: const Text('Something went wrong...'),
-            actions: [
-              TextButton(
-                onPressed: () { navigator.pop(); },
-                child: const Text('Close')
-              )
-            ],
-          ),
-        );
-      } finally {
-        setState(() { _isLoading = false; });
-        navigator.pop();
-      } 
+        // provider.addProduct(_editedProduct)
+        //   .catchError((error) {
+        //     return showDialog<Null>(
+        //       context: context, 
+        //       builder: (context) => AlertDialog(
+        //         title: const Text('An error ocurred!'),
+        //         content: const Text('Something went wrong...'),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () { navigator.pop(); },
+        //             child: const Text('Close')
+        //           )
+        //         ],
+        //       ),
+        //     );
+        //   })
+        //   .then((value) {
+        //     setState(() { _isLoading = false; });
+        //     navigator.pop();
+        //   });
+      }
+    } catch (e) {
+      await showDialog<Null>(
+        context: context, 
+        builder: (context) => AlertDialog(
+          title: const Text('An error ocurred!'),
+          content: const Text('Something went wrong...'),
+          actions: [
+            TextButton(
+              onPressed: () { navigator.pop(); },
+              child: const Text('Close')
+            )
+          ],
+        ),
+      );
+    } finally {
+      setState(() { _isLoading = false; });
+      navigator.pop();
     }
+
   }
 
   @override

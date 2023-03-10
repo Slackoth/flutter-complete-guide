@@ -84,8 +84,6 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> addProduct(ProductProvider product) async {
-    final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
-
     // return http.post(url, body: json.encode(product.toJson())).then((response) {
     //   final ProductProvider newProduct = ProductProvider.copy(
     //     product, 
@@ -95,6 +93,8 @@ class ProductsProvider with ChangeNotifier {
     //   _products.add(newProduct);
     //   notifyListeners();
     // }).catchError((error) => error);
+    final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
+
     try {
       final http.Response response = await http.post(url, body: json.encode(product.toJson()));
       final ProductProvider newProduct = ProductProvider.copy(
@@ -107,13 +107,21 @@ class ProductsProvider with ChangeNotifier {
     } catch (error) { rethrow; }
   }
 
-  void updateProduct(ProductProvider editedProduct) {
+  Future<void> updateProduct(ProductProvider editedProduct) async {
     final index = _products.indexWhere((product) => product.id == editedProduct.id);
-
+    
     if(index >= 0) {
+      final Uri url = Uri.https(ShopAppUtils.firebaseUrl, '/products/${editedProduct.id}.json');
+      
+      try {
+        await http.patch(url, body: json.encode(editedProduct.toJson()));
+      } catch (error) { rethrow; }
+
       _products[index] = editedProduct;
       notifyListeners();
     }
+
+    return Future.value(null);
   }
 
   void deleteProduct(String id) {

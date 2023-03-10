@@ -29,7 +29,6 @@ class ProductProvider with ChangeNotifier {
     'description': description,
     'imageUrl': imageUrl,
     'price': price,
-    'isFavorite': isFavorite
   };
 
   void toggleIsFavorite() {

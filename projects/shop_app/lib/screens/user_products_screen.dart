@@ -10,6 +10,10 @@ class UserProductScreen extends StatelessWidget {
 
   static const String routeName = '/users-products';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<ProductsProvider>(context, listen: false).fetchProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,21 +27,24 @@ class UserProductScreen extends StatelessWidget {
       ),
       drawer: const MainDrawer(),
       body: Consumer<ProductsProvider>(
-        builder: (context, value, child) => Padding(
-          padding: const EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: value.products.length,
-            itemBuilder: (context, index) {
-              return Column(children: [
-                UserProductItem(
-                  id: value.products[index].id,
-                  title: value.products[index].title, 
-                  imageUrl: value.products[index].imageUrl,
-                  deleteProduct: () => value.deleteProduct(value.products[index].id)
-                ),
-                const Divider()
-              ],);
-            }
+        builder: (context, value, child) => RefreshIndicator(
+          onRefresh: () { return _refreshProducts(context); },
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: ListView.builder(
+              itemCount: value.products.length,
+              itemBuilder: (context, index) {
+                return Column(children: [
+                  UserProductItem(
+                    id: value.products[index].id,
+                    title: value.products[index].title, 
+                    imageUrl: value.products[index].imageUrl,
+                    deleteProduct: () => value.deleteProduct(value.products[index].id)
+                  ),
+                  const Divider()
+                ],);
+              }
+            ),
           ),
         ),
       ),
