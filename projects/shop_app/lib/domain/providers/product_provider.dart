@@ -17,8 +17,7 @@ class ProductProvider with ChangeNotifier {
     this.isFavorite = false
   });
 
-  ProductProvider.fromJson(Map<String, dynamic> json) : 
-    id = json['id'],
+  ProductProvider.fromJson(Map<String, dynamic> json, this.id) : 
     title = json['title'],
     description = json['description'],
     imageUrl = json['imageUrl'],

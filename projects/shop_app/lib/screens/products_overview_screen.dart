@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/domain/providers/cart_provider.dart';
+import 'package:shop_app/domain/providers/products_provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/cart/cart_badge.dart';
 
@@ -19,7 +20,38 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  bool _isInit = true;
+  bool _isLoading = false;
   bool _showFavoritesOnly = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    setState(() { _isLoading = true; });
+
+    if(_isInit) {
+      Provider.of<ProductsProvider>(context).fetchProducts()
+        .catchError((error) => 
+          showDialog<Null>(
+            context: context, 
+            builder: (context) => AlertDialog(
+              title: const Text('An error ocurred!'),
+              content: const Text('Something went wrong...'),
+              actions: [
+                TextButton(
+                  onPressed: () { Navigator.of(context).pop(); },
+                  child: const Text('Close')
+                )
+              ],
+            ),
+          )
+        )
+        .then((value) {
+          setState(() { _isLoading = false; });
+        });
+      _isInit = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
