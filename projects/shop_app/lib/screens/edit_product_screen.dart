@@ -14,6 +14,7 @@ class EditProductScreen extends StatefulWidget {
 
 class _EditProductScreenState extends State<EditProductScreen> {
   bool _isInit = true;
+  bool _isLoading = false;
   final FocusNode _priceFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
   final FocusNode _imageUrlFocusNode = FocusNode();
@@ -47,17 +48,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     // Triggers on save handle
     _form.currentState?.save();
+    setState(() { _isLoading = true; });
 
+    final NavigatorState navigator = Navigator.of(context);
     final ProductsProvider provider = Provider.of<ProductsProvider>(context, listen: false);
 
     if(_initProduct != null) {
       provider.updateProduct(_editedProduct);
     }
     else {
-      provider.addProduct(_editedProduct);
+      provider.addProduct(_editedProduct).then((value) {
+        setState(() { _isLoading = false; });
+        navigator.pop();
+      });
     }
-
-    Navigator.of(context).pop();
   }
 
   @override
@@ -109,7 +113,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           )
         ],
       ),
-      body: Padding(
+      body: _isLoading ? const Center(child: CircularProgressIndicator()) : Padding(
         padding: const EdgeInsets.all(16),
         child: Form(key: _form, child: SingleChildScrollView(
           child: Column(children: [

@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/Utils/shop_app_utils.dart';
 import 'package:shop_app/domain/providers/product_provider.dart';
 
 class ProductsProvider with ChangeNotifier {
+  static const apiPath = '/products.json';
   // Shouldn't do this here on the provider, instead, on a stateful widget
   // bool _showFavoritesOnly = false;
 
@@ -63,11 +68,18 @@ class ProductsProvider with ChangeNotifier {
     return _products.firstWhere((product) => product.id == id);
   }
 
-  void addProduct(ProductProvider product) {
-    final ProductProvider newProduct = ProductProvider.copy(product, DateTime.now().toIso8601String());
+  Future<void> addProduct(ProductProvider product) {
+    final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
 
-    _products.add(newProduct);
-    notifyListeners();
+    return http.post(url, body: json.encode(product.toJson())).then((response) {
+      final ProductProvider newProduct = ProductProvider.copy(
+        product, 
+        json.decode(response.body)['name']
+      );
+      
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 
   void updateProduct(ProductProvider editedProduct) {
