@@ -6,7 +6,7 @@ import 'package:shop_app/Utils/shop_app_utils.dart';
 import 'package:shop_app/domain/providers/product_provider.dart';
 
 class ProductsProvider with ChangeNotifier {
-  static const apiPath = '/products.json';
+  static const apiPath = '/products';
   // Shouldn't do this here on the provider, instead, on a stateful widget
   // bool _showFavoritesOnly = false;
 
@@ -79,7 +79,7 @@ class ProductsProvider with ChangeNotifier {
       
       _products.add(newProduct);
       notifyListeners();
-    });
+    }).catchError((error) => error);
   }
 
   void updateProduct(ProductProvider editedProduct) {
