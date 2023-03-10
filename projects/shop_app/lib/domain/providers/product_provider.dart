@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../../Utils/shop_app_utils.dart';
 
 class ProductProvider with ChangeNotifier {
   final String id;
@@ -32,8 +37,22 @@ class ProductProvider with ChangeNotifier {
     'isFavorite': isFavorite
   };
 
-  void toggleIsFavorite() {
+  Future<void> toggleIsFavorite() async {
+    final bool oldStatus = isFavorite;
     isFavorite = !isFavorite;
+    final Uri url = Uri.https(ShopAppUtils.firebaseUrl, '/products/$id.json');
+
+    try {
+      final http.Response response = await http.patch(url, body: json.encode({ 'isFavorite': isFavorite }));
+
+      if(response.statusCode >= 400) {
+        throw const HttpException('Updating failed!');
+      }
+    } catch (error) {
+      isFavorite = oldStatus;
+      notifyListeners();
+    }
+
     notifyListeners();
   }
 
