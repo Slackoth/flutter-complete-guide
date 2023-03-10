@@ -39,7 +39,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     // Triggers validator handle
     final bool? isValid = _form.currentState?.validate();
 
@@ -57,26 +57,47 @@ class _EditProductScreenState extends State<EditProductScreen> {
       provider.updateProduct(_editedProduct);
     }
     else {
-      provider.addProduct(_editedProduct)
-        .catchError((error) {
-          return showDialog<Null>(
-            context: context, 
-            builder: (context) => AlertDialog(
-              title: const Text('An error ocurred!'),
-              content: const Text('Something went wrong...'),
-              actions: [
-                TextButton(
-                  onPressed: () { navigator.pop(); },
-                  child: const Text('Close')
-                )
-              ],
-            ),
-          );
-        })
-        .then((value) {
-          setState(() { _isLoading = false; });
-          navigator.pop();
-        });
+      // provider.addProduct(_editedProduct)
+      //   .catchError((error) {
+      //     return showDialog<Null>(
+      //       context: context, 
+      //       builder: (context) => AlertDialog(
+      //         title: const Text('An error ocurred!'),
+      //         content: const Text('Something went wrong...'),
+      //         actions: [
+      //           TextButton(
+      //             onPressed: () { navigator.pop(); },
+      //             child: const Text('Close')
+      //           )
+      //         ],
+      //       ),
+      //     );
+      //   })
+      //   .then((value) {
+      //     setState(() { _isLoading = false; });
+      //     navigator.pop();
+      //   });
+
+      try {
+        await provider.addProduct(_editedProduct);
+      } catch (error) {
+        showDialog<Null>(
+          context: context, 
+          builder: (context) => AlertDialog(
+            title: const Text('An error ocurred!'),
+            content: const Text('Something went wrong...'),
+            actions: [
+              TextButton(
+                onPressed: () { navigator.pop(); },
+                child: const Text('Close')
+              )
+            ],
+          ),
+        );
+      } finally {
+        setState(() { _isLoading = false; });
+        navigator.pop();
+      } 
     }
   }
 

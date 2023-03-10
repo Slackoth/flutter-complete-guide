@@ -68,10 +68,20 @@ class ProductsProvider with ChangeNotifier {
     return _products.firstWhere((product) => product.id == id);
   }
 
-  Future<void> addProduct(ProductProvider product) {
+  Future<void> addProduct(ProductProvider product) async {
     final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
 
-    return http.post(url, body: json.encode(product.toJson())).then((response) {
+    // return http.post(url, body: json.encode(product.toJson())).then((response) {
+    //   final ProductProvider newProduct = ProductProvider.copy(
+    //     product, 
+    //     json.decode(response.body)['name']
+    //   );
+      
+    //   _products.add(newProduct);
+    //   notifyListeners();
+    // }).catchError((error) => error);
+    try {
+      final http.Response response = await http.post(url, body: json.encode(product.toJson()));
       final ProductProvider newProduct = ProductProvider.copy(
         product, 
         json.decode(response.body)['name']
@@ -79,7 +89,7 @@ class ProductsProvider with ChangeNotifier {
       
       _products.add(newProduct);
       notifyListeners();
-    }).catchError((error) => error);
+    } catch (error) { rethrow; }
   }
 
   void updateProduct(ProductProvider editedProduct) {
