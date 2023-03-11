@@ -1,5 +1,5 @@
 class CartItem {
-  final String id;
+  String id;
   final String title;
   final int quantity;
   final double price;
@@ -10,4 +10,15 @@ class CartItem {
     required this.quantity, 
     required this.price
   });
+
+  CartItem.fromJson(Map<String, dynamic> json, this.id) : 
+    title = json['title'],
+    quantity = json['quantity'],
+    price = json['price'];
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'quantity': quantity,
+    'price': price
+  };
 }

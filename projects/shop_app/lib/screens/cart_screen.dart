@@ -38,13 +38,7 @@ class CartScreen extends StatelessWidget {
                       ),
                       backgroundColor: theme.colorScheme.primary,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        ordersProvider.addOrder(value.items.values.toList(), value.totalAmount);
-                        value.clear();
-                      },
-                      child: const Text('ORDER NOW')
-                    )
+                    OrderButton(ordersProvider: ordersProvider, cart: value)
                   ],
                 ),
               ),
@@ -62,6 +56,54 @@ class CartScreen extends StatelessWidget {
           ))
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    super.key,
+    required this.cart,
+    required this.ordersProvider,
+  });
+
+  final CartProvider cart;
+  final OrdersProvider ordersProvider;
+
+  @override
+  State<OrderButton> createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: widget.cart.totalAmount <= 0 ? null : () async {
+        setState(() { _isLoading = true; });
+
+        try {
+          await widget.ordersProvider.addOrder(widget.cart.items.values.toList(), widget.cart.totalAmount);
+          widget.cart.clear();
+        } catch (error) {
+          await showDialog<Null>(
+            context: context, 
+            builder: (context) => AlertDialog(
+              title: const Text('An error ocurred!'),
+              content: const Text('Something went wrong...'),
+              actions: [
+                TextButton(
+                  onPressed: () { Navigator.of(context).pop(); },
+                  child: const Text('Close')
+                )
+              ],
+            ),
+          );
+        }
+        finally { setState(() { _isLoading = false; }); }
+      },
+      child: _isLoading ? const CircularProgressIndicator() : const Text('ORDER NOW')
     );
   }
 }
