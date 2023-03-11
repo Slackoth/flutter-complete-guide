@@ -19,10 +19,25 @@ class OrdersProvider with ChangeNotifier {
     return _orders.length;
   }
 
+  Future<void> fetchOrders() async {
+    try {
+      final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
+      final http.Response response = await http.get(url);
+      final Map<String, dynamic> data = json.decode(response.body) as Map<String, dynamic>;
+      
+      _orders.clear();
+      data.forEach((key, value) {
+        _orders.add(OrderItem.fromJson(value, key));
+      });
+      notifyListeners();
+    } catch (error) { rethrow; }
+  }
+
   Future<void> addOrder(List<CartItem> items, double amount) async {
     final DateTime timestamp = DateTime.now();
     final Uri url = Uri.https(ShopAppUtils.firebaseUrl, apiPath);
     final OrderItem order = OrderItem(
+      id: DateTime.now().toIso8601String(),
       amount: amount, 
       products: items,
       dateTime: timestamp

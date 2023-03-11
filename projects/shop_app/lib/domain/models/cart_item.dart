@@ -5,7 +5,7 @@ class CartItem {
   final double price;
 
   CartItem({
-    required this.id, 
+    this.id = '', 
     required this.title, 
     required this.quantity, 
     required this.price
@@ -17,6 +17,7 @@ class CartItem {
     price = json['price'];
 
   Map<String, dynamic> toJson() => {
+    // 'id': id,
     'title': title,
     'quantity': quantity,
     'price': price

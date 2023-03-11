@@ -7,7 +7,7 @@ class OrderItem {
   final DateTime dateTime;
 
   OrderItem({
-    this.id = 'false', 
+    this.id = '', 
     required this.amount, 
     required this.products,
     required this.dateTime
@@ -15,8 +15,14 @@ class OrderItem {
 
   OrderItem.fromJson(Map<String, dynamic> json, this.id) : 
     amount = json['amount'],
-    products = json['products'],
-    dateTime = json['dateTime'];
+    products = (json['products'] as List<dynamic>).map(
+      (item) => CartItem(
+        // id: item['id'], 
+        title: item['title'], 
+        quantity: item['quantity'], 
+        price: item['price']
+      )).toList(),
+    dateTime = DateTime.parse(json['dateTime']);
 
   Map<String, dynamic> toJson(List<Map<String, dynamic>> products) => {
     'amount': amount,
