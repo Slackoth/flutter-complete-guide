@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/domain/providers/cart_provider.dart';
 import 'package:shop_app/domain/providers/orders_provider.dart';
 import 'package:shop_app/domain/providers/products_provider.dart';
+import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/edit_product_screen.dart';
 import 'package:shop_app/screens/orders_screen.dart';
@@ -39,6 +40,7 @@ class ShopApp extends StatelessWidget {
             .copyWith(secondary: Colors.amber),
         ),
         routes: {
+          '/':(context) => const AuthScreen(),
           ProductsOverviewScreen.routeName: (context) => const ProductsOverviewScreen(),
           ProductDetailScreen.routeName:(context) => const ProductDetailScreen(),
           CartScreen.routeName: (context) => const CartScreen(),
