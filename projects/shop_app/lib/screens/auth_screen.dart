@@ -126,18 +126,10 @@ class _AuthCardState extends State<_AuthCard> {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
 
     try {
-      bool success = false;
-
       if (_authMode == AuthMode.login) {
         await auth.login(_authData['email']!, _authData['password']!);
-        success = true;
       } else {
         await auth.signUp(_authData['email']!, _authData['password']!);
-        success = true;
-      }
-
-      if(success) {
-        Navigator.of(context).pushNamed(ProductsOverviewScreen.routeName);
       }
     } on HttpException catch(error) {
       String msg = 'Authentication failed.';
