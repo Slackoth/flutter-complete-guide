@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/domain/exceptions/http/http_exception.dart';
 import 'package:shop_app/domain/providers/auth_provider.dart';
+import 'package:shop_app/screens/products_overview_screen.dart';
 
 enum AuthMode { signup, login }
 
@@ -102,6 +104,16 @@ class _AuthCardState extends State<_AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
+  void _showErrorDialog(String msg) {
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: const Text('An Error Ocurred!'),
+      content: Text(msg),
+      actions: [
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Okay'))
+      ],
+    ));
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -109,21 +121,47 @@ class _AuthCardState extends State<_AuthCard> {
     }
 
     _formKey.currentState?.save();
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() { _isLoading = true; });
 
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
 
-    if (_authMode == AuthMode.login) {
-      await auth.login(_authData['email']!, _authData['password']!);
-    } else {
-      await auth.signUp(_authData['email']!, _authData['password']!);
-    }
+    try {
+      bool success = false;
 
-    setState(() {
-      _isLoading = false;
-    });
+      if (_authMode == AuthMode.login) {
+        await auth.login(_authData['email']!, _authData['password']!);
+        success = true;
+      } else {
+        await auth.signUp(_authData['email']!, _authData['password']!);
+        success = true;
+      }
+
+      if(success) {
+        Navigator.of(context).pushNamed(ProductsOverviewScreen.routeName);
+      }
+    } on HttpException catch(error) {
+      String msg = 'Authentication failed.';
+
+      if(error.toString().contains('EMAIL_EXISTS')) {
+        msg = 'This email address is already in use.';  
+      }
+      else if(error.toString().contains('INVALID_EMAIL')) {
+        msg = 'Please provude a valid email.';  
+      }
+      else if(error.toString().contains('EMAIL_NOT_FOUND')) {
+        msg = 'This email could not be found.';  
+      }
+      else if(error.toString().contains('INVALID_PASSWORD')) {
+        msg = 'Please provide a valid password.';  
+      }
+
+      _showErrorDialog(msg);
+    } catch(error) {
+      _showErrorDialog('Could not authenticate you. Please try again later.');
+    }
+    finally {
+      setState(() { _isLoading = false; });
+    }
   }
 
   void _switchAuthMode() {
